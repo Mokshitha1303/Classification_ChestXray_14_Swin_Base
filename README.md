@@ -1,6 +1,6 @@
-# ChestX-ray14 Swin-Base (512×512) — Training Repo
+# ChestX-ray14 Swin-Base
 
-This repo is a **repo-style, runnable PyTorch project** for **multi-label thoracic disease classification** on **NIH ChestX-ray14** using a **Swin-Base Transformer** (from `timm`) with:
+Details of the Hyperparameters are as follows:
 
 - **512×512** inputs
 - **Weighted BCEWithLogitsLoss** (`pos_weight` computed from training split)
