@@ -1,0 +1,15 @@
+Atelectasis	0.781519
+Cardiomegaly	0.883061
+Effusion	0.832523
+Infiltration	0.705006
+Mass	0.826804
+Nodule	0.767977
+Pneumonia	0.721818
+Pneumothorax	0.883544
+Consolidation	0.752758
+Edema	0.850258
+Emphysema	0.935198
+Fibrosis	0.818747
+Pleural_Thickening	0.785096
+Hernia	0.855471
+MEAN	0.814270

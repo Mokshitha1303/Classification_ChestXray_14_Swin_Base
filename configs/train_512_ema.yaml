@@ -1,0 +1,82 @@
+# Training config for Swin-Base ChestX-ray14 (512×512)
+experiment:
+  name: swin_base_512_ema
+
+data:
+  # REQUIRED: absolute path to the directory containing *all* ChestX-ray14 PNG images
+  # (can contain nested folders; we scan recursively)
+  images_dir: ""
+
+  # Split / mapping files (STRICT)
+  splits_dir: "data"
+  train_split: "train_official.txt"
+  val_split: "val_official.txt"
+  test_split: "test_official.txt"
+  disease_map: "disease_map.txt"
+
+  # We build filename->fullpath index once and cache it
+  index_cache_path: "data/image_index.json"
+  rebuild_index: false
+  strict: true
+
+model:
+  # timm model name
+  name: "swin_base_patch4_window7_224"
+  pretrained: true
+  num_classes: 14
+  drop_rate: 0.0
+  drop_path_rate: 0.1
+  grad_checkpointing: false
+
+train:
+  img_size: 512
+  epochs: 10
+
+  # If you see OOM on 512x512, reduce batch_size or increase grad_accum_steps
+  batch_size: 16
+  grad_accum_steps: 1
+
+  lr: 5.0e-5
+  weight_decay: 0.05
+  betas: [0.9, 0.999]
+
+  warmup_epochs: 1
+  min_lr: 1.0e-6
+
+  amp: true
+  clip_grad_norm: 1.0
+
+  ema:
+    enabled: true
+    decay: 0.9999
+
+  num_workers: 8
+  pin_memory: true
+  persistent_workers: true
+
+  log_interval: 50
+
+  save_dir: "checkpoints"
+  save_best: true
+  best_metric: "val_mean_auc"  # used for best checkpoint selection
+  save_top_k: 3                # keep the top-3 checkpoints by best_metric under checkpoints/topk/
+  resume: ""                   # path to checkpoint to resume, optional
+
+  # Early stopping (validation loss)
+  early_stopping:
+    enabled: true
+    monitor: "val_loss"
+    mode: "min"
+    patience: 5
+    min_delta: 0.0
+
+  seed: 42
+  cudnn_benchmark: true
+  tf32: true
+  channels_last: true
+  compile: false
+
+eval:
+  use_ema: true
+  batch_size: 32
+  num_workers: 8
